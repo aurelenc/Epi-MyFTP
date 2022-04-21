@@ -7,6 +7,16 @@
 
 #pragma once
 
+#include <sys/socket.h>
+#include <sys/select.h>
+#include <netinet/ip.h>
+#include <arpa/inet.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <stdio.h>
+
 #define MAX_BUFF_SIZE 255
 #define MAX_CLIENTS 10
 
@@ -23,3 +33,11 @@ typedef struct server_s {
     struct sockaddr_in addr;
     socklen_t len;
 } server_t;
+
+/// Clients
+void new_client(client_sock_t **clients, int client_socket);
+void listen_clients(client_sock_t *clients, fd_set *rfd);
+
+/// Server
+int configure_server(server_t *server, char *port_param);
+void server_loop(client_sock_t *clients, server_t *server);

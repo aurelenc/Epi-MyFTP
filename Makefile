@@ -11,6 +11,8 @@ TESTS_NAME	=	unit_tests
 
 SRC	=	src/main.c\
 		src/my_ftp.c\
+		src/server.c\
+		src/clients.c\
 
 OBJ	=	${SRC:.c=.o}
 
