@@ -19,8 +19,8 @@ void new_client(client_socket_t **clients, int client_socket)
 {
     int i = 0;
 
-    for (; clients[i]->socket != 0; i++);
-    if (!clients[i]->socket)
+    for (; clients[i]->socket != 0 && i < MAX_CLIENTS; i++);
+    if (clients[i]->socket)
         return;
     clients[i]->socket = client_socket;
     clients[i]->rbuf = calloc(sizeof(char), MAX_BUFF_SIZE + 1);
@@ -53,6 +53,8 @@ int my_ftp(int ac, char **av)
         FD_ZERO(&rfd);
         FD_ZERO(&wfd);
         FD_SET(server_socket, &rfd);
+        for (int i = 0; clients[i].socket != 0; i++)
+            FD_SET(clients[i].socket, &rfd);
 
         select(FD_SETSIZE, &rfd, &wfd, NULL, NULL);
         if (FD_ISSET(server_socket, &rfd)) {
@@ -60,10 +62,11 @@ int my_ftp(int ac, char **av)
             accept(server_socket, (struct sockaddr *)&server_addr, &socklen));
         }
         for (int i = 0; clients[i].socket != 0; i++) {
+            printf("%d", clients[i].socket);
             if (FD_ISSET(clients[i].socket, &rfd)) {
                 read(clients[i].socket, clients[i].rbuf, MAX_BUFF_SIZE);
-                if (strncmp(clients[i].rbuf, "bonjour", 7) == 0)
-                    dprintf(clients[i].socket, "au revoir\n");
+                if (strncmp(clients[i].rbuf, "a", 1) == 0)
+                    dprintf(clients[i].socket, "b\n");
             }
         }
     }
