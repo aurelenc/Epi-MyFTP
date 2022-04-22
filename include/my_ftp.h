@@ -35,8 +35,10 @@ typedef struct server_s {
 } server_t;
 
 /// Clients
-void new_client(client_sock_t **clients, int client_socket);
-void listen_clients(client_sock_t *clients, fd_set *rfd);
+void new_client(client_sock_t *clients, int client_socket);
+void remove_client(client_sock_t **clients, int remove_index);
+void listen_clients(client_sock_t *clients, server_t *server);
+void write_client_buff(client_sock_t *clients, int i, char *message);
 
 /// Server
 int configure_server(server_t *server, char *port_param);

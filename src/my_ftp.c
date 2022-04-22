@@ -19,12 +19,30 @@ static bool has_param_error(int ac, char **av)
     return false;
 }
 
-static int display_help()
+static int display_help(void)
 {
     printf("USAGE: ./myftp port path\n");
-    printf("      port  is the port number on which the server socket listens\n");
-    printf("      path  is the path to the home directory for the Anonymous user\n");
+    printf("      port  is the port number on which the \
+server socket listens\n");
+    printf("      path  is the path to the home directory \
+for the Anonymous user\n");
     return 0;
+}
+
+client_sock_t *init_clients(void)
+{
+    client_sock_t *clients = calloc(sizeof(client_sock_t), MAX_CLIENTS + 1);
+
+    if (!clients)
+        return NULL;
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        clients[i].socket = 0;
+        clients[i].rbuf = calloc(sizeof(char), MAX_BUFF_SIZE);
+        clients[i].wbuf = calloc(sizeof(char), MAX_BUFF_SIZE);
+        if (!clients[i].rbuf || !clients[i].wbuf)
+            return NULL;
+    }
+    return clients;
 }
 
 int my_ftp(int ac, char **av)
@@ -38,7 +56,7 @@ int my_ftp(int ac, char **av)
         return display_help();
     if (configure_server(&server, av[1]) < 0)
         return 84;
-    clients = calloc(sizeof(client_sock_t), MAX_CLIENTS + 1);
+    clients = init_clients();
     if (!clients) {
         close(server.socket);
         return 84;

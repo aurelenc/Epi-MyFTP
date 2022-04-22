@@ -13,13 +13,14 @@ SRC	=	src/main.c\
 		src/my_ftp.c\
 		src/server.c\
 		src/clients.c\
+		src/client_input.c\
 
 OBJ	=	${SRC:.c=.o}
 
-CFLAGS	=	-Wall -Werror -I include/ -g
+CFLAGS	=	-Wall -Werror -I include/
 
 $(NAME): $(OBJ)
-	gcc $(OBJ) -o $(NAME) -g
+	gcc $(OBJ) -o $(NAME)
 
 clean:
 	rm -f $(OBJ)

@@ -32,8 +32,8 @@ void server_loop(client_sock_t *clients, server_t *server)
         FD_SET(clients[i].socket, &server->rfd);
     select(FD_SETSIZE, &server->rfd, &server->wfd, NULL, NULL);
     if (FD_ISSET(server->socket, &server->rfd)) {
-        new_client(&clients, accept(server->socket,
+        new_client(clients, accept(server->socket,
         (struct sockaddr *)&server->addr, &server->len));
     }
-    listen_clients(clients, &server->rfd);
+    listen_clients(clients, server);
 }

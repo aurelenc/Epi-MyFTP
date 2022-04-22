@@ -10,6 +10,7 @@ NAME	=	unit_tests
 SRC	=	../src/my_ftp.c\
 		../src/server.c\
 		../src/clients.c\
+		../src/client_input.c\
 
 TEST_SRC	=	tests_my_ftp.c
 
