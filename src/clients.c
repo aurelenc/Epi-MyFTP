@@ -21,21 +21,9 @@ void new_client(client_sock_t **clients, int client_socket)
     clients[i]->wbuf = calloc(sizeof(char), MAX_BUFF_SIZE + 1);
 }
 
-void remove_client(client_sock_t **clients, int remove_index)
+static void remove_client(client_sock_t **clients, int remove_index)
 {
-    // int i = remove_index;
     close(clients[remove_index]->socket);
-    // for (; i < MAX_CLIENTS && clients[i]->socket + 1 != 0; i++)
-    // {
-    //     clients[i]->socket = clients[i + 1]->socket;
-    //     memset(clients[i]->rbuf, 0, MAX_BUFF_SIZE);
-    //     memset(clients[i]->wbuf, 0, MAX_BUFF_SIZE);
-    //     memcpy(clients[i]->rbuf, clients[i + 1]->rbuf, MAX_BUFF_SIZE);
-    //     memcpy(clients[i]->wbuf, clients[i + 1]->wbuf, MAX_BUFF_SIZE);
-    // }
-    // clients[i]->socket = 0;
-    // memset(clients[i]->rbuf, 0, MAX_BUFF_SIZE);
-    // memset(clients[i]->wbuf, 0, MAX_BUFF_SIZE);
     clients[remove_index]->socket = 0;
     memset(clients[remove_index]->rbuf, 0, MAX_BUFF_SIZE);
     memset(clients[remove_index]->wbuf, 0, MAX_BUFF_SIZE);

@@ -7,7 +7,7 @@
 
 #include "my_ftp.h"
 
-bool has_param_error(int ac, char **av)
+static bool has_param_error(int ac, char **av)
 {
     if (ac == 2) {
         if (strcmp(av[1], "-help") == 0)
@@ -19,7 +19,7 @@ bool has_param_error(int ac, char **av)
     return false;
 }
 
-int display_help()
+static int display_help()
 {
     printf("USAGE: ./myftp port path\n");
     printf("      port  is the port number on which the server socket listens\n");
