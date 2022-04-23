@@ -24,5 +24,6 @@
 
 #define CODE_430 "430 Invalid username or password.\r\n"
 #define CODE_501 "501 Syntax error in parameters or arguments.\r\n"
+#define CODE_530 "530 Not logged in.\r\n"
 #define CODE_550 "550 Requested action not taken.\r\n"
 #define CODE_10068 "10068 Too many users, server is full.\r\n"

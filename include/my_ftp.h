@@ -36,7 +36,26 @@ typedef struct client_sock_s {
     char *path;
 } client_sock_t;
 
+enum command_e {
+    USER_COMMAND,
+    PASS_COMMAND,
+    CWD_COMMAND,
+    CDUP_COMMAND,
+    QUIT_COMMAND,
+    DELE_COMMAND,
+    PWD_COMMAND,
+    PASV_COMMAND,
+    PORT_COMMAND,
+    HELP_COMMAND,
+    NOOP_COMMAND,
+    RETR_COMMAND,
+    STOR_COMMAND,
+    LIST_COMMAND,
+    COMMAND_ENUM_SIZE
+};
+
 typedef struct command_s {
+    enum command_e id;
     char *cmd;
     int required_params_nb;
     int optional_params_nb;
@@ -51,6 +70,11 @@ typedef struct server_s {
     socklen_t len;
     char *default_path;
 } server_t;
+
+typedef struct params_s {
+    char **array;
+    int nb;
+} params_t;
 
 extern command_t commands[];
 

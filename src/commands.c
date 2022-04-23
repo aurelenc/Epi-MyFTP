@@ -8,19 +8,19 @@
 #include "my_ftp.h"
 
 command_t commands[] = {
-    {"USER", 1, 0, &user_command},
-    {"PASS", 1, 0, &pass_command},
-    {"CWD", 1, 0, &cwd_command},
-    {"CDUP", 0, 0, &cdup_command},
-    {"QUIT", 0, 0, &quit_command},
-    {"DELE", 1, 0, &dele_command},
-    {"PWD", 0, 0, &pwd_command},
-    {"PASV", 0, 0, &pasv_command},
-    {"PORT", 1, 0, &port_command},
-    {"HELP", 0, 1, &help_command},
-    {"NOOP", 0, 0, &noop_command},
-    {"RETR", 1, 0, &retr_command},
-    {"STOR", 1, 0, &stor_command},
-    {"LIST", 0, 1, &list_command},
-    {NULL, 0, 0, NULL}
+    {USER_COMMAND, "USER", 1, 0, &user_command},
+    {PASS_COMMAND, "PASS", 1, 0, &pass_command},
+    {CWD_COMMAND, "CWD", 1, 0, &cwd_command},
+    {CDUP_COMMAND, "CDUP", 0, 0, &cdup_command},
+    {QUIT_COMMAND, "QUIT", 0, 0, &quit_command},
+    {DELE_COMMAND, "DELE", 1, 0, &dele_command},
+    {PWD_COMMAND, "PWD", 0, 0, &pwd_command},
+    {PASV_COMMAND, "PASV", 0, 0, &pasv_command},
+    {PORT_COMMAND, "PORT", 1, 0, &port_command},
+    {HELP_COMMAND, "HELP", 0, 1, &help_command},
+    {NOOP_COMMAND, "NOOP", 0, 0, &noop_command},
+    {RETR_COMMAND, "RETR", 1, 0, &retr_command},
+    {STOR_COMMAND, "STOR", 1, 0, &stor_command},
+    {LIST_COMMAND, "LIST", 0, 1, &list_command},
+    {COMMAND_ENUM_SIZE, NULL, 0, 0, NULL}
 };
