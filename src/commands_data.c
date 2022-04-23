@@ -7,14 +7,14 @@
 
 #include "my_ftp.h"
 
-void retr_command(client_sock_t *clients, int id, char **args, int params_nb)
+void retr_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
 {
 }
 
-void stor_command(client_sock_t *clients, int id, char **args, int params_nb)
+void stor_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
 {
 }
 
-void list_command(client_sock_t *clients, int id, char **args, int params_nb)
+void list_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
 {
 }

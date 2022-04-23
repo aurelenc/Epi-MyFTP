@@ -17,6 +17,9 @@ void new_client(client_sock_t *clients, int client_socket, char *default_path)
         return;
     }
     clients[i].socket = client_socket;
+    clients[i].is_logged = false;
+    clients[i].is_passive = 1;
+    clients[i].transfer_socket = 0;
     memset(clients[i].rbuf, 0, MAX_BUFF_SIZE);
     memset(clients[i].wbuf, 0, MAX_BUFF_SIZE);
     memset(clients[i].user, 0, MAX_USER_SIZE);
@@ -47,7 +50,7 @@ void listen_clients(client_sock_t *clients, server_t *server)
 {
     for (int i = 0; i < MAX_CLIENTS && clients[i].socket != 0; i++) {
         if (FD_ISSET(clients[i].socket, &server->rfd))
-            handle_input(clients, i);
+            handle_input(clients, i, server);
         // if (FD_ISSET(clients[i].socket, &server->wfd))
         write_to_client(&clients[i]);
     }

@@ -26,7 +26,7 @@ int get_command_params(char **dest, char *src)
     return i;
 }
 
-void exec_cmd(client_sock_t *clients, int id, int command_id, params_t params)
+void exec_cmd(client_id_t *cid, int command_id, server_t *srv, params_t args)
 {
     bool require_auth = true;
 
@@ -36,16 +36,17 @@ void exec_cmd(client_sock_t *clients, int id, int command_id, params_t params)
             break;
         }
     }
-    if (require_auth && !clients[id].is_logged) {
-        write_client_buff(clients, id, CODE_530);
+    if (require_auth && !cid->clients[cid->id].is_logged) {
+        write_client_buff(cid->clients, cid->id, CODE_530);
         return;
     }
-    commands[command_id].func(clients, id, params.array, params.nb);
+    commands[command_id].func(cid->clients, cid->id, srv, args);
 }
 
-void handle_input(client_sock_t *clients, int id)
+void handle_input(client_sock_t *clients, int id, server_t *server)
 {
     params_t params;
+    client_id_t cid = {.clients = clients, .id = id};
 
     params.nb = 0;
     params.array = calloc(sizeof(char *), MAX_PARAMS_NB + 1);
@@ -58,7 +59,7 @@ void handle_input(client_sock_t *clients, int id)
     for (enum command_e i = 0; i < COMMAND_ENUM_SIZE; i++) {
         if (strncmp(clients[id].rbuf, commands[i].cmd,
             strlen(commands[i].cmd)) == 0) {
-                exec_cmd(clients, id, i, params);
+                exec_cmd(&cid, i, server, params);
             memset(clients[id].rbuf, 0, MAX_BUFF_SIZE);
             break;
         }

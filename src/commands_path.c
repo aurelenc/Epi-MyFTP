@@ -28,26 +28,26 @@ static char *get_clean_path(char *path, char *add_path)
     return clean;
 }
 
-void cwd_command(client_sock_t *clients, int id, char **args, int params_nb)
+void cwd_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
 {
-    if (params_nb != 2) {
+    if (arg.nb != 2) {
         write_client_buff(clients, id, CODE_501);
         return;
     }
-    if (args[1][0] != '/') {
+    if (arg.array[1][0] != '/') {
         if (clients[id].path[strlen(clients[id].path) - 1] != '/')
             strcat(clients[id].path, "/");
-        strcat(clients[id].path, args[1]);
+        strcat(clients[id].path, arg.array[1]);
     } else {
         memset(clients[id].path, 0, MAX_PATH_SIZE);
-        strcpy(clients[id].path, args[1]);
+        strcpy(clients[id].path, arg.array[1]);
     }
     write_client_buff(clients, id, CODE_250);
 }
 
-void cdup_command(client_sock_t *clients, int id, char **args, int params_nb)
+void cdup_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
 {
-    if (params_nb != 1) {
+    if (arg.nb != 1) {
         write_client_buff(clients, id, CODE_501);
         return;
     }
@@ -66,7 +66,7 @@ void cdup_command(client_sock_t *clients, int id, char **args, int params_nb)
     write_client_buff(clients, id, CODE_250);
 }
 
-void pwd_command(client_sock_t *clients, int id, char **args, int params_nb)
+void pwd_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
 {
     char *buff = calloc(sizeof(char), MAX_BUFF_SIZE);
 
@@ -78,15 +78,15 @@ void pwd_command(client_sock_t *clients, int id, char **args, int params_nb)
     free(buff);
 }
 
-void dele_command(client_sock_t *clients, int id, char **args, int params_nb)
+void dele_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
 {
     char *buff;
 
-    if (params_nb != 2) {
+    if (arg.nb != 2) {
         write_client_buff(clients, id, CODE_501);
         return;
     }
-    buff = get_clean_path(clients[id].path, args[1]);
+    buff = get_clean_path(clients[id].path, arg.array[1]);
     if (buff == NULL) {
         write_client_buff(clients, id, CODE_451);
         return;

@@ -29,12 +29,19 @@
 typedef struct client_sock_s {
     int socket;
     bool is_logged;
+    bool is_passive;
+    int transfer_socket;
     char *rbuf;
     char *wbuf;
     char *user;
     char *pass;
     char *path;
 } client_sock_t;
+
+typedef struct client_id_s {
+    client_sock_t *clients;
+    int id;
+} client_id_t;
 
 enum command_e {
     USER_COMMAND,
@@ -54,14 +61,6 @@ enum command_e {
     COMMAND_ENUM_SIZE
 };
 
-typedef struct command_s {
-    enum command_e id;
-    char *cmd;
-    int required_params_nb;
-    int optional_params_nb;
-    void (*func)(client_sock_t *clients, int id, char **params, int params_nb);
-} command_t;
-
 typedef struct server_s {
     int socket;
     fd_set rfd;
@@ -76,6 +75,14 @@ typedef struct params_s {
     int nb;
 } params_t;
 
+typedef struct command_s {
+    enum command_e id;
+    char *cmd;
+    int required_params_nb;
+    int optional_params_nb;
+    void (*func)(client_sock_t *, int, server_t *, params_t);
+} command_t;
+
 extern const command_t commands[];
 extern const enum command_e no_auth_commands[];
 
@@ -84,24 +91,24 @@ void new_client(client_sock_t *clients, int client_socket, char *default_path);
 void remove_client(client_sock_t *clients, int remove_index);
 void listen_clients(client_sock_t *clients, server_t *server);
 void write_client_buff(client_sock_t *clients, int i, char *message);
-void handle_input(client_sock_t *clients, int id);
+void handle_input(client_sock_t *clients, int id, server_t *server);
 
 /// Server
 int configure_server(server_t *server, char *port_param, char *path_param);
 void server_loop(client_sock_t *clients, server_t *server);
 
 /// Commands
-void user_command(client_sock_t *clients, int id, char **args, int params_nb);
-void pass_command(client_sock_t *clients, int id, char **args, int params_nb);
-void quit_command(client_sock_t *clients, int id, char **args, int params_nb);
-void help_command(client_sock_t *clients, int id, char **args, int params_nb);
-void noop_command(client_sock_t *clients, int id, char **args, int params_nb);
-void cwd_command(client_sock_t *clients, int id, char **args, int params_nb);
-void cdup_command(client_sock_t *clients, int id, char **args, int params_nb);
-void pwd_command(client_sock_t *clients, int id, char **args, int params_nb);
-void dele_command(client_sock_t *clients, int id, char **args, int params_nb);
-void retr_command(client_sock_t *clients, int id, char **args, int params_nb);
-void stor_command(client_sock_t *clients, int id, char **args, int params_nb);
-void list_command(client_sock_t *clients, int id, char **args, int params_nb);
-void pasv_command(client_sock_t *clients, int id, char **args, int params_nb);
-void port_command(client_sock_t *clients, int id, char **args, int params_nb);
+void user_command(client_sock_t *clients, int id, server_t *srv, params_t arg);
+void pass_command(client_sock_t *clients, int id, server_t *srv, params_t arg);
+void quit_command(client_sock_t *clients, int id, server_t *srv, params_t arg);
+void help_command(client_sock_t *clients, int id, server_t *srv, params_t arg);
+void noop_command(client_sock_t *clients, int id, server_t *srv, params_t arg);
+void cwd_command(client_sock_t *clients, int id, server_t *srv, params_t arg);
+void cdup_command(client_sock_t *clients, int id, server_t *srv, params_t arg);
+void pwd_command(client_sock_t *clients, int id, server_t *srv, params_t arg);
+void dele_command(client_sock_t *clients, int id, server_t *srv, params_t arg);
+void retr_command(client_sock_t *clients, int id, server_t *srv, params_t arg);
+void stor_command(client_sock_t *clients, int id, server_t *srv, params_t arg);
+void list_command(client_sock_t *clients, int id, server_t *srv, params_t arg);
+void pasv_command(client_sock_t *clients, int id, server_t *srv, params_t arg);
+void port_command(client_sock_t *clients, int id, server_t *srv, params_t arg);

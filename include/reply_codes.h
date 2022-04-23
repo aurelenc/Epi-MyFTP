@@ -15,7 +15,7 @@
 #define CODE_220 "220 Service ready for new user.\r\n"
 #define CODE_221 "221 Service closing control connection.\r\n"
 #define CODE_226 "226 Closing data connection.\r\n"
-#define CODE_227 "227 Entering Passive Mode (h1,h2,h3,h4,p1,p2).\r\n"
+#define CODE_227 "227 Entering Passive Mode (%d,%d,%d,%d,%d,%d).\r\n"
 #define CODE_230 "230 User logged in, proceed.\r\n"
 #define CODE_250 "250 Requested file action okay, completed.\r\n"
 #define CODE_257 "257 \"%s\" created.\r\n"

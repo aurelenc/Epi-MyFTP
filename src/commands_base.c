@@ -8,14 +8,14 @@
 #include "my_ftp.h"
 #include "reply_codes.h"
 
-void user_command(client_sock_t *clients, int id, char **args, int params_nb)
+void user_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
 {
-    if (params_nb != 2) {
+    if (arg.nb != 2) {
         write_client_buff(clients, id, CODE_501);
         return;
     }
     memset(clients[id].user, 0, MAX_USER_SIZE);
-    strcpy(clients[id].user, args[1]);
+    strcpy(clients[id].user, arg.array[1]);
     if (strcmp(clients[id].user, "Anonymous") == 0) {
         if (strcmp(clients[id].pass, "") == 0) {
             clients[id].is_logged = true;
@@ -30,15 +30,15 @@ void user_command(client_sock_t *clients, int id, char **args, int params_nb)
     }
 }
 
-void pass_command(client_sock_t *clients, int id, char **args, int params_nb)
+void pass_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
 {
-    if (params_nb > 2) {
+    if (arg.nb > 2) {
         write_client_buff(clients, id, CODE_501);
         return;
     }
     memset(clients[id].pass, 0, MAX_PASS_SIZE);
-    if (params_nb == 2)
-        strcpy(clients[id].pass, args[1]);
+    if (arg.nb == 2)
+        strcpy(clients[id].pass, arg.array[1]);
     if (strcmp(clients[id].user, "Anonymous") == 0) {
         if (strcmp(clients[id].pass, "") == 0) {
             clients[id].is_logged = true;
@@ -53,13 +53,13 @@ void pass_command(client_sock_t *clients, int id, char **args, int params_nb)
     }
 }
 
-void quit_command(client_sock_t *clients, int id, char **args, int params_nb)
+void quit_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
 {
     dprintf(clients[id].socket, CODE_221);
     remove_client(clients, id);
 }
 
-void help_command(client_sock_t *clients, int id, char **args, int params_nb)
+void help_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
 {
     char *message = CODE_214;
 
@@ -70,7 +70,7 @@ void help_command(client_sock_t *clients, int id, char **args, int params_nb)
     strcat(clients[id].wbuf, message);
 }
 
-void noop_command(client_sock_t *clients, int id, char **args, int params_nb)
+void noop_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
 {
     write_client_buff(clients, id, CODE_200);
 }
