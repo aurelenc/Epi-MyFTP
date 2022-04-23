@@ -14,6 +14,11 @@ SRC	=	src/main.c\
 		src/server.c\
 		src/clients.c\
 		src/client_input.c\
+		src/commands.c\
+		src/commands_base.c\
+		src/commands_path.c\
+		src/commands_data.c\
+		src/commands_mode.c\
 
 OBJ	=	${SRC:.c=.o}
 
