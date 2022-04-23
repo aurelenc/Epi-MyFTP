@@ -16,6 +16,7 @@ SRC	=	../src/my_ftp.c\
 		../src/commands_path.c\
 		../src/commands_data.c\
 		../src/commands_mode.c\
+		../src/commands_list.c\
 
 TEST_SRC	=	tests_my_ftp.c
 

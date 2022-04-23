@@ -19,6 +19,7 @@ SRC	=	src/main.c\
 		src/commands_path.c\
 		src/commands_data.c\
 		src/commands_mode.c\
+		src/commands_list.c\
 
 OBJ	=	${SRC:.c=.o}
 

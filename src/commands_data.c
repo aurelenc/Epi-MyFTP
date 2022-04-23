@@ -99,7 +99,3 @@ void stor_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
     close(fd);
     free(path);
 }
-
-void list_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
-{
-}
