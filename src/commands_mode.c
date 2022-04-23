@@ -20,8 +20,8 @@ static int set_transfer_socket(client_id_t *cid, server_t *srv, int port)
     cid->clients[cid->id].transfer_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (cid->clients[cid->id].transfer_socket < 0)
         return -1;
-    if (bind(cid->clients[cid->id].transfer_socket, (struct sockaddr *)&sockaddr,
-        socklen) < 0)
+    if (bind(cid->clients[cid->id].transfer_socket,
+        (struct sockaddr *)&sockaddr, socklen) < 0)
         return -1;
     getsockname(cid->clients[cid->id].transfer_socket,
     (struct sockaddr *)&sockaddr, &socklen);
