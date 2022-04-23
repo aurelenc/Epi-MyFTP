@@ -7,6 +7,20 @@
 
 #include "my_ftp.h"
 
+static void set_client_strings(client_sock_t *clients, int id, char *path)
+{
+    memset(clients[id].rbuf, 0, MAX_BUFF_SIZE);
+    memset(clients[id].wbuf, 0, MAX_BUFF_SIZE);
+    memset(clients[id].user, 0, MAX_USER_SIZE);
+    memset(clients[id].pass, 0, MAX_PASS_SIZE);
+    clients[id].pass[0] = ' ';
+    memset(clients[id].path, 0, MAX_PATH_SIZE);
+    if (strlen(path) > MAX_PATH_SIZE)
+        strcpy(clients[id].path, "/");
+    else
+        strcpy(clients[id].path, path);
+}
+
 void new_client(client_sock_t *clients, int client_socket, char *default_path)
 {
     int i = 0;
@@ -20,16 +34,7 @@ void new_client(client_sock_t *clients, int client_socket, char *default_path)
     clients[i].is_logged = false;
     clients[i].is_passive = 1;
     clients[i].transfer_socket = 0;
-    memset(clients[i].rbuf, 0, MAX_BUFF_SIZE);
-    memset(clients[i].wbuf, 0, MAX_BUFF_SIZE);
-    memset(clients[i].user, 0, MAX_USER_SIZE);
-    memset(clients[i].pass, 0, MAX_PASS_SIZE);
-    clients[i].pass[0] = ' ';
-    memset(clients[i].path, 0, MAX_PATH_SIZE);
-    if (strlen(default_path) > MAX_PATH_SIZE)
-        strcpy(clients[i].path, "/");
-    else
-        strcpy(clients[i].path, default_path);
+    set_client_strings(clients, i, default_path);
     dprintf(client_socket, CODE_220);
 }
 
