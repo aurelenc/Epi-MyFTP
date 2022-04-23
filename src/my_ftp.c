@@ -39,7 +39,10 @@ client_sock_t *init_clients(void)
         clients[i].socket = 0;
         clients[i].rbuf = calloc(sizeof(char), MAX_BUFF_SIZE);
         clients[i].wbuf = calloc(sizeof(char), MAX_BUFF_SIZE);
-        if (!clients[i].rbuf || !clients[i].wbuf)
+        clients[i].user = calloc(sizeof(char), MAX_BUFF_SIZE);
+        clients[i].pass = calloc(sizeof(char), MAX_BUFF_SIZE);
+        if (!clients[i].rbuf || !clients[i].wbuf ||
+            !clients[i].user || !clients[i].pass)
             return NULL;
     }
     return clients;
