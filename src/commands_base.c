@@ -55,12 +55,13 @@ void pass_command(client_sock_t *clients, int id, char **args, int params_nb)
 
 void quit_command(client_sock_t *clients, int id, char **args, int params_nb)
 {
+    dprintf(clients[id].socket, CODE_221);
     remove_client(clients, id);
 }
 
 void help_command(client_sock_t *clients, int id, char **args, int params_nb)
 {
-    char *message = "214\n\0";
+    char *message = CODE_214;
 
     if (strlen(clients[id].wbuf) + strlen(message) > MAX_BUFF_SIZE) {
         remove_client(clients, id);
@@ -71,4 +72,5 @@ void help_command(client_sock_t *clients, int id, char **args, int params_nb)
 
 void noop_command(client_sock_t *clients, int id, char **args, int params_nb)
 {
+    write_client_buff(clients, id, CODE_200);
 }

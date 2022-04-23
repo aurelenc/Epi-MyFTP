@@ -11,9 +11,9 @@ void new_client(client_sock_t *clients, int client_socket)
 {
     int i = 0;
 
-    for (; i < MAX_CLIENTS && clients[i].socket != 0; i++);
+    for (; i < MAX_CLIENTS - 1 && clients[i].socket != 0; i++);
     if (clients[i].socket) {
-        dprintf(client_socket, "Too many connexions to server\n");
+        dprintf(client_socket, CODE_10068);
         return;
     }
     clients[i].socket = client_socket;
@@ -27,14 +27,9 @@ void new_client(client_sock_t *clients, int client_socket)
 
 void remove_client(client_sock_t *clients, int remove_index)
 {
-    for (int i = 0; i < MAX_CLIENTS; i++) {
-        if (clients[i].socket == remove_index) {
-            // shutdown(clients[i].socket, SHUT_RDWR);
-            close(clients[i].socket);
-            clients[i].socket = 0;
-            return;
-        }
-    }
+    shutdown(clients[remove_index].socket, SHUT_RDWR);
+    close(clients[remove_index].socket);
+    clients[remove_index].socket = 0;
 }
 
 void write_to_client(client_sock_t *client)
@@ -45,7 +40,7 @@ void write_to_client(client_sock_t *client)
 
 void listen_clients(client_sock_t *clients, server_t *server)
 {
-    for (int i = 0; clients[i].socket != 0; i++) {
+    for (int i = 0; i < MAX_CLIENTS && clients[i].socket != 0; i++) {
         if (FD_ISSET(clients[i].socket, &server->rfd))
             handle_input(clients, i);
         // if (FD_ISSET(clients[i].socket, &server->wfd))

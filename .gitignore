@@ -8,3 +8,5 @@ unit_tests
 .idea/
 test_ftp.sh
 EPITECH-MyFTP-Protocol-(RFC959-Extract).txt
+fifo
+outfile
