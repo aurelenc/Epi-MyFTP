@@ -96,6 +96,7 @@ void handle_input(client_sock_t *clients, int id, server_t *server);
 /// Server
 int configure_server(server_t *server, char *port_param, char *path_param);
 void server_loop(client_sock_t *clients, server_t *server);
+char *get_clean_path(char *path, char *add_path);
 
 /// Commands
 void user_command(client_sock_t *clients, int id, server_t *srv, params_t arg);

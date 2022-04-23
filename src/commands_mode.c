@@ -23,9 +23,9 @@ static int set_transfer_socket(client_id_t *cid, server_t *srv, int port)
     if (bind(cid->clients[cid->id].transfer_socket, (struct sockaddr *)&sockaddr,
         socklen) < 0)
         return -1;
-    getsockname(cid->clients[cid->id].transfer_socket, (struct sockaddr *)&sockaddr, &socklen);
-    port = ntohs(sockaddr.sin_port);
-    return port;
+    getsockname(cid->clients[cid->id].transfer_socket,
+    (struct sockaddr *)&sockaddr, &socklen);
+    return ntohs(sockaddr.sin_port);
 }
 
 static int *get_ip_segments(char *ip)

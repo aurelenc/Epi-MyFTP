@@ -7,7 +7,7 @@
 
 #include "my_ftp.h"
 
-static char *get_clean_path(char *path, char *add_path)
+char *get_clean_path(char *path, char *add_path)
 {
     char *clean = NULL;
 
