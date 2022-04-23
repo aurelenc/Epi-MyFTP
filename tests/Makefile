@@ -21,10 +21,12 @@ TEST_SRC	=	tests_my_ftp.c
 
 CFLAGS	=	-Wall -Werror
 
-LDFLAGS = -lpthread -lcriterion --coverage -I ../include/
+LDFLAGS = -lcriterion --coverage -I ../include/
+
+CC	=	gcc
 
 $(NAME):
-	gcc $(SRC) $(TEST_SRC) -o $(NAME) ${LDFLAGS}
+	$(CC) $(SRC) $(TEST_SRC) -o $(NAME) ${LDFLAGS}
 
 clean:
 	rm -f *.gc*

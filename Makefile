@@ -24,8 +24,10 @@ OBJ	=	${SRC:.c=.o}
 
 CFLAGS	=	-Wall -Werror -I include/
 
+CC	=	gcc
+
 $(NAME): $(OBJ)
-	gcc $(OBJ) -o $(NAME)
+	$(CC) $(OBJ) -o $(NAME)
 
 clean:
 	rm -f $(OBJ)
