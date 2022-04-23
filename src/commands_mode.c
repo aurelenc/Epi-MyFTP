@@ -23,7 +23,8 @@ static int set_transfer_socket(client_id_t *cid, server_t *srv, int port)
     if (bind(cid->clients[cid->id].transfer_socket, (struct sockaddr *)&sockaddr,
         socklen) < 0)
         return -1;
-    port = ntohs(srv->addr.sin_port);
+    getsockname(cid->clients[cid->id].transfer_socket, (struct sockaddr *)&sockaddr, &socklen);
+    port = ntohs(sockaddr.sin_port);
     return port;
 }
 
@@ -53,7 +54,7 @@ void pasv_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
         write_client_buff(clients, id, CODE_425);
         return;
     }
-    clients[id].is_passive = 1;
+    clients[id].is_passive = true;
     buff = calloc(sizeof(char), strlen(CODE_227) + (3*6) + 1);
     if (!buff) {
         write_client_buff(clients, id, CODE_451);
@@ -61,9 +62,24 @@ void pasv_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
     }
     sprintf(buff, CODE_227, ip_segments[0], ip_segments[1], ip_segments[2],
         ip_segments[3], port / 256, port % 256);
-    write_client_buff(clients, id, CODE_227);
+    write_client_buff(clients, id, buff);
+    free(buff);
 }
 
 void port_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
 {
+    client_id_t cid = {.clients = clients, .id = id};
+    int port = atoi(arg.array[1]);
+
+    if (arg.nb != 2 || port == 0) {
+        write_client_buff(clients, id, CODE_501);
+        return;
+    }
+    port = set_transfer_socket(&cid, srv, port);
+    if (port < 0) {
+        write_client_buff(clients, id, CODE_425);
+        return;
+    }
+    clients[id].is_passive = false;
+    write_client_buff(clients, id, CODE_200);
 }
