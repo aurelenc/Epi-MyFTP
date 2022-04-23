@@ -22,7 +22,7 @@
 #define MAX_USER_SIZE 256
 #define MAX_PASS_SIZE 256
 #define MAX_PATH_SIZE 1024
-#define MAX_CLIENTS 10
+#define MAX_CLIENTS 20
 #define MAX_ARGS_NB 1
 #define MAX_PARAMS_NB MAX_ARGS_NB + 1
 
