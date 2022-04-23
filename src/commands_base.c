@@ -61,13 +61,7 @@ void quit_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
 
 void help_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
 {
-    char *message = CODE_214;
-
-    if (strlen(clients[id].wbuf) + strlen(message) > MAX_BUFF_SIZE) {
-        remove_client(clients, id);
-        return;
-    }
-    strcat(clients[id].wbuf, message);
+    write_client_buff(clients, id, CODE_214);
 }
 
 void noop_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
