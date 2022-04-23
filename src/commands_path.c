@@ -47,6 +47,23 @@ void cwd_command(client_sock_t *clients, int id, char **args, int params_nb)
 
 void cdup_command(client_sock_t *clients, int id, char **args, int params_nb)
 {
+    if (params_nb != 1) {
+        write_client_buff(clients, id, CODE_501);
+        return;
+    }
+    if (strcmp(clients[id].path, "/") == 0) {
+        write_client_buff(clients, id, CODE_550);
+        return;
+    }
+    if (clients[id].path[strlen(clients[id].path) - 1] == '/')
+        clients[id].path[strlen(clients[id].path) - 1] = '\0';
+    for (int i = strlen(clients[id].path); i > 0; i--) {
+        if (clients[id].path[i] == '/') {
+            clients[id].path[i] = '\0';
+            break;
+        }
+    }
+    write_client_buff(clients, id, CODE_250);
 }
 
 void pwd_command(client_sock_t *clients, int id, char **args, int params_nb)
