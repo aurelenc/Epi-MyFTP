@@ -18,18 +18,22 @@
 #include <stdio.h>
 #include "reply_codes.h"
 
-#define MAX_BUFF_SIZE 255
+#define MAX_BUFF_SIZE 1024
+#define MAX_USER_SIZE 256
+#define MAX_PASS_SIZE 256
+#define MAX_PATH_SIZE 256
 #define MAX_CLIENTS 10
 #define MAX_ARGS_NB 1
 #define MAX_PARAMS_NB MAX_ARGS_NB + 1
 
 typedef struct client_sock_s {
     int socket;
+    bool is_logged;
     char *rbuf;
     char *wbuf;
     char *user;
     char *pass;
-    bool is_logged;
+    char *path;
 } client_sock_t;
 
 typedef struct command_s {
@@ -45,19 +49,20 @@ typedef struct server_s {
     fd_set wfd;
     struct sockaddr_in addr;
     socklen_t len;
+    char *default_path;
 } server_t;
 
 extern command_t commands[];
 
 /// Clients
-void new_client(client_sock_t *clients, int client_socket);
+void new_client(client_sock_t *clients, int client_socket, char *default_path);
 void remove_client(client_sock_t *clients, int remove_index);
 void listen_clients(client_sock_t *clients, server_t *server);
 void write_client_buff(client_sock_t *clients, int i, char *message);
 void handle_input(client_sock_t *clients, int id);
 
 /// Server
-int configure_server(server_t *server, char *port_param);
+int configure_server(server_t *server, char *port_param, char *path_param);
 void server_loop(client_sock_t *clients, server_t *server);
 
 /// Commands

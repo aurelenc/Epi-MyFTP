@@ -39,10 +39,11 @@ client_sock_t *init_clients(void)
         clients[i].socket = 0;
         clients[i].rbuf = calloc(sizeof(char), MAX_BUFF_SIZE);
         clients[i].wbuf = calloc(sizeof(char), MAX_BUFF_SIZE);
-        clients[i].user = calloc(sizeof(char), MAX_BUFF_SIZE);
-        clients[i].pass = calloc(sizeof(char), MAX_BUFF_SIZE);
+        clients[i].user = calloc(sizeof(char), MAX_USER_SIZE);
+        clients[i].pass = calloc(sizeof(char), MAX_PASS_SIZE);
+        clients[i].path = calloc(sizeof(char), MAX_PATH_SIZE);
         if (!clients[i].rbuf || !clients[i].wbuf ||
-            !clients[i].user || !clients[i].pass)
+            !clients[i].user || !clients[i].pass || !clients[i].path)
             return NULL;
     }
     return clients;
@@ -57,7 +58,7 @@ int my_ftp(int ac, char **av)
         return 84;
     if (ac == 2)
         return display_help();
-    if (configure_server(&server, av[1]) < 0)
+    if (configure_server(&server, av[1], av[2]) < 0)
         return 84;
     clients = init_clients();
     if (!clients) {

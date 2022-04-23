@@ -14,7 +14,7 @@ void user_command(client_sock_t *clients, int id, char **args, int params_nb)
         write_client_buff(clients, id, CODE_501);
         return;
     }
-    memset(clients[id].user, 0, MAX_BUFF_SIZE);
+    memset(clients[id].user, 0, MAX_USER_SIZE);
     strcpy(clients[id].user, args[1]);
     if (strcmp(clients[id].user, "Anonymous") == 0) {
         if (strcmp(clients[id].pass, "") == 0) {
@@ -36,7 +36,7 @@ void pass_command(client_sock_t *clients, int id, char **args, int params_nb)
         write_client_buff(clients, id, CODE_501);
         return;
     }
-    memset(clients[id].pass, 0, MAX_BUFF_SIZE);
+    memset(clients[id].pass, 0, MAX_PASS_SIZE);
     if (params_nb == 2)
         strcpy(clients[id].pass, args[1]);
     if (strcmp(clients[id].user, "Anonymous") == 0) {

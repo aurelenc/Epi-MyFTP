@@ -7,7 +7,7 @@
 
 #include "my_ftp.h"
 
-void new_client(client_sock_t *clients, int client_socket)
+void new_client(client_sock_t *clients, int client_socket, char *default_path)
 {
     int i = 0;
 
@@ -19,9 +19,14 @@ void new_client(client_sock_t *clients, int client_socket)
     clients[i].socket = client_socket;
     memset(clients[i].rbuf, 0, MAX_BUFF_SIZE);
     memset(clients[i].wbuf, 0, MAX_BUFF_SIZE);
-    memset(clients[i].user, 0, MAX_BUFF_SIZE);
-    memset(clients[i].pass, 0, MAX_BUFF_SIZE);
+    memset(clients[i].user, 0, MAX_USER_SIZE);
+    memset(clients[i].pass, 0, MAX_PASS_SIZE);
     clients[i].pass[0] = ' ';
+    memset(clients[i].path, 0, MAX_PATH_SIZE);
+    if (strlen(default_path) > MAX_PATH_SIZE)
+        strcpy(clients[i].path, "/");
+    else
+        strcpy(clients[i].path, default_path);
     dprintf(client_socket, CODE_220);
 }
 

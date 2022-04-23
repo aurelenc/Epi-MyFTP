@@ -7,7 +7,7 @@
 
 #include "my_ftp.h"
 
-int configure_server(server_t *server, char *port_param)
+int configure_server(server_t *server, char *port_param, char *path_param)
 {
     server->socket = socket(AF_INET, SOCK_STREAM, 0);
     if (server->socket < 0)
@@ -16,6 +16,7 @@ int configure_server(server_t *server, char *port_param)
     server->addr.sin_port = htons(atoi(port_param));
     server->addr.sin_addr.s_addr = INADDR_ANY;
     server->len = sizeof(server->addr);
+    server->default_path = path_param;
     if (bind(server->socket, (struct sockaddr *)&server->addr, server->len) < 0)
         return -1;
     if (listen(server->socket, MAX_CLIENTS) < 0)
@@ -33,7 +34,7 @@ void server_loop(client_sock_t *clients, server_t *server)
     select(FD_SETSIZE, &server->rfd, &server->wfd, NULL, NULL);
     if (FD_ISSET(server->socket, &server->rfd)) {
         new_client(clients, accept(server->socket,
-        (struct sockaddr *)&server->addr, &server->len));
+        (struct sockaddr *)&server->addr, &server->len), server->default_path);
     }
     listen_clients(clients, server);
 }
