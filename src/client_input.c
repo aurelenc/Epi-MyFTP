@@ -28,12 +28,15 @@ int get_command_params(char **dest, char *src)
 
 void exec_cmd(client_sock_t *clients, int id, int command_id, params_t params)
 {
-    if (!clients[id].is_logged &&
-        command_id != USER_COMMAND &&
-        command_id != PASS_COMMAND &&
-        command_id != QUIT_COMMAND &&
-        command_id != HELP_COMMAND &&
-        command_id != NOOP_COMMAND) {
+    bool require_auth = true;
+
+    for (int i = 0; i < COMMAND_ENUM_SIZE; i++) {
+        if (no_auth_commands[i] == command_id) {
+            require_auth = false;
+            break;
+        }
+    }
+    if (require_auth && !clients[id].is_logged) {
         write_client_buff(clients, id, CODE_530);
         return;
     }
@@ -52,7 +55,7 @@ void handle_input(client_sock_t *clients, int id)
         return;
     }
     params.nb = get_command_params(params.array, clients[id].rbuf);
-    for (enum command_e i = 0; commands[i].cmd; i++) {
+    for (enum command_e i = 0; i < COMMAND_ENUM_SIZE; i++) {
         if (strncmp(clients[id].rbuf, commands[i].cmd,
             strlen(commands[i].cmd)) == 0) {
                 exec_cmd(clients, id, i, params);

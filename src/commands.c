@@ -7,7 +7,7 @@
 
 #include "my_ftp.h"
 
-command_t commands[] = {
+const command_t commands[] = {
     {USER_COMMAND, "USER", 1, 0, &user_command},
     {PASS_COMMAND, "PASS", 1, 0, &pass_command},
     {CWD_COMMAND, "CWD", 1, 0, &cwd_command},
@@ -23,4 +23,13 @@ command_t commands[] = {
     {STOR_COMMAND, "STOR", 1, 0, &stor_command},
     {LIST_COMMAND, "LIST", 0, 1, &list_command},
     {COMMAND_ENUM_SIZE, NULL, 0, 0, NULL}
+};
+
+const enum command_e no_auth_commands[] = {
+    USER_COMMAND,
+    PASS_COMMAND,
+    QUIT_COMMAND,
+    HELP_COMMAND,
+    NOOP_COMMAND,
+    COMMAND_ENUM_SIZE
 };

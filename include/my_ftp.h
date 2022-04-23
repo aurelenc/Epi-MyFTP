@@ -18,10 +18,10 @@
 #include <stdio.h>
 #include "reply_codes.h"
 
-#define MAX_BUFF_SIZE 1024
+#define MAX_BUFF_SIZE 2048
 #define MAX_USER_SIZE 256
 #define MAX_PASS_SIZE 256
-#define MAX_PATH_SIZE 256
+#define MAX_PATH_SIZE 1024
 #define MAX_CLIENTS 10
 #define MAX_ARGS_NB 1
 #define MAX_PARAMS_NB MAX_ARGS_NB + 1
@@ -76,7 +76,8 @@ typedef struct params_s {
     int nb;
 } params_t;
 
-extern command_t commands[];
+extern const command_t commands[];
+extern const enum command_e no_auth_commands[];
 
 /// Clients
 void new_client(client_sock_t *clients, int client_socket, char *default_path);

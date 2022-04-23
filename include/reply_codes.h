@@ -23,6 +23,7 @@
 #define CODE_332 "332 Need account for login.\r\n"
 
 #define CODE_430 "430 Invalid username or password.\r\n"
+#define CODE_451 "451 Requested action aborted. Local error in processing.\r\n"
 #define CODE_501 "501 Syntax error in parameters or arguments.\r\n"
 #define CODE_530 "530 Not logged in.\r\n"
 #define CODE_550 "550 Requested action not taken.\r\n"
