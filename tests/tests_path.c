@@ -86,7 +86,7 @@ Test(cdup, home)
         return;
     new_client(clients, 1, "/home");
     cdup_command(clients, 0, NULL, (params_t){params, 1});
-    cr_assert(strcmp(clients[0].wbuf, CODE_250) == 0);
+    cr_assert(strcmp(clients[0].wbuf, CODE_200) == 0);
     cr_assert(strcmp(clients[0].path, "/") == 0);
 }
 
