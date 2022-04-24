@@ -17,7 +17,8 @@ int configure_server(server_t *server, char *port_param, char *path_param)
     server->addr.sin_addr.s_addr = INADDR_ANY;
     server->len = sizeof(server->addr);
     server->default_path = path_param;
-    if (bind(server->socket, (struct sockaddr *)&server->addr, server->len) < 0)
+    if (bind(server->socket, (struct sockaddr *)&server->addr,
+        server->len) < 0)
         return -1;
     if (listen(server->socket, MAX_CLIENTS) < 0)
         return -1;

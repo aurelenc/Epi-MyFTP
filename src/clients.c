@@ -56,7 +56,6 @@ void listen_clients(client_sock_t *clients, server_t *server)
     for (int i = 0; i < MAX_CLIENTS && clients[i].socket != 0; i++) {
         if (FD_ISSET(clients[i].socket, &server->rfd))
             handle_input(clients, i, server);
-        // if (FD_ISSET(clients[i].socket, &server->wfd))
         write_to_client(&clients[i]);
     }
 }
