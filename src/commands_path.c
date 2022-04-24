@@ -58,10 +58,9 @@ void cdup_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
     if (clients[id].path[strlen(clients[id].path) - 1] == '/')
         clients[id].path[strlen(clients[id].path) - 1] = '\0';
     for (int i = strlen(clients[id].path); i > 0; i--) {
-        if (clients[id].path[i] == '/') {
-            clients[id].path[i] = '\0';
+        clients[id].path[i] = '\0';
+        if (clients[id].path[i - 1] == '/')
             break;
-        }
     }
     write_client_buff(clients, id, CODE_250);
 }
