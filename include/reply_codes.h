@@ -11,7 +11,8 @@
 #define CODE_125 "125 Data connection already open; transfer starting.\r\n"
 #define CODE_150 "150 File status okay; about to open data connection.\r\n"
 #define CODE_200 "200 Command okay.\r\n"
-#define CODE_214 "214 Help message.\r\n"
+#define CODE_214 "214 Commands: USER PASS CWD CDUP QUIT DELE PWD PASV PORT\
+HELP NOOP RETR STOR LIST.\r\n"
 #define CODE_220 "220 Service ready for new user.\r\n"
 #define CODE_221 "221 Service closing control connection.\r\n"
 #define CODE_226 "226 Closing data connection.\r\n"
