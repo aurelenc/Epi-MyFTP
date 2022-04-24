@@ -62,7 +62,7 @@ void cdup_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
         if (clients[id].path[i - 1] == '/')
             break;
     }
-    write_client_buff(clients, id, CODE_250);
+    write_client_buff(clients, id, CODE_200);
 }
 
 void pwd_command(client_sock_t *clients, int id, server_t *srv, params_t arg)

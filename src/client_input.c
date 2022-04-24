@@ -43,6 +43,23 @@ void exec_cmd(client_id_t *cid, int command_id, server_t *srv, params_t args)
     commands[command_id].func(cid->clients, cid->id, srv, args);
 }
 
+void find_command(client_id_t *cid, int id, server_t *server, params_t params)
+{
+    bool command_found = false;
+
+    for (enum command_e i = 0; i < COMMAND_ENUM_SIZE; i++) {
+        if (strncmp(cid->clients[id].rbuf, commands[i].cmd,
+            strlen(commands[i].cmd)) == 0) {
+            exec_cmd(cid, i, server, params);
+            memset(cid->clients[id].rbuf, 0, MAX_BUFF_SIZE);
+            command_found = true;
+            break;
+        }
+    }
+    if (!command_found)
+        write_client_buff(cid->clients, id, CODE_550);
+}
+
 void handle_input(client_sock_t *clients, int id, server_t *server)
 {
     params_t params;
@@ -56,12 +73,5 @@ void handle_input(client_sock_t *clients, int id, server_t *server)
         return;
     }
     params.nb = get_command_params(params.array, clients[id].rbuf);
-    for (enum command_e i = 0; i < COMMAND_ENUM_SIZE; i++) {
-        if (strncmp(clients[id].rbuf, commands[i].cmd,
-            strlen(commands[i].cmd)) == 0) {
-                exec_cmd(&cid, i, server, params);
-            memset(clients[id].rbuf, 0, MAX_BUFF_SIZE);
-            break;
-        }
-    }
+    find_command(&cid, id, server, params);
 }
