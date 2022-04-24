@@ -5,6 +5,7 @@
 ** commands_path
 */
 
+#include <dirent.h>
 #include "my_ftp.h"
 
 char *get_clean_path(char *path, char *add_path)
@@ -30,8 +31,15 @@ char *get_clean_path(char *path, char *add_path)
 
 void cwd_command(client_sock_t *clients, int id, server_t *srv, params_t arg)
 {
+    DIR *dir;
+
     if (arg.nb != 2) {
         write_client_buff(clients, id, CODE_501);
+        return;
+    }
+    dir = opendir(get_clean_path(clients[id].path, arg.array[1]));
+    if (!dir) {
+        write_client_buff(clients, id, CODE_550);
         return;
     }
     if (arg.array[1][0] != '/') {
