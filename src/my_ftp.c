@@ -5,10 +5,13 @@
 ** my_ftp
 */
 
+#include <dirent.h>
 #include "my_ftp.h"
 
 static bool has_param_error(int ac, char **av)
 {
+    DIR *dir;
+
     if (ac == 2) {
         if (strcmp(av[1], "-help") == 0)
             return false;
@@ -16,6 +19,11 @@ static bool has_param_error(int ac, char **av)
     }
     if (ac != 3)
         return true;
+    dir = opendir(av[2]);
+    if (!dir)
+        return true;
+    else
+        closedir(dir);
     return false;
 }
 
