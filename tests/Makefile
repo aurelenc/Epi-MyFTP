@@ -18,7 +18,8 @@ SRC	=	../src/my_ftp.c\
 		../src/commands_mode.c\
 		../src/commands_list.c\
 
-TEST_SRC	=	tests_my_ftp.c
+TEST_SRC	=	tests_base.c\
+				tests_path.c\
 
 CFLAGS	=	-Wall -Werror
 

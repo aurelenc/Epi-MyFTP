@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2022
-** myftp
+** Epi-MyFTP
 ** File description:
-** myftp_tests
+** tests_base
 */
 
 #include <criterion/criterion.h>
@@ -12,11 +12,6 @@
 #include "../include/my_ftp.h"
 
 client_sock_t *init_clients(void);
-
-Test(github_action, test)
-{
-    cr_assert(0 == 0);
-}
 
 Test(user, username)
 {
