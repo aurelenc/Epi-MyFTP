@@ -43,24 +43,6 @@ typedef struct client_id_s {
     int id;
 } client_id_t;
 
-enum command_e {
-    USER_COMMAND,
-    PASS_COMMAND,
-    CWD_COMMAND,
-    CDUP_COMMAND,
-    QUIT_COMMAND,
-    DELE_COMMAND,
-    PWD_COMMAND,
-    PASV_COMMAND,
-    PORT_COMMAND,
-    HELP_COMMAND,
-    NOOP_COMMAND,
-    RETR_COMMAND,
-    STOR_COMMAND,
-    LIST_COMMAND,
-    COMMAND_ENUM_SIZE
-};
-
 typedef struct server_s {
     int socket;
     fd_set rfd;
@@ -76,15 +58,14 @@ typedef struct params_s {
 } params_t;
 
 typedef struct command_s {
-    enum command_e id;
     char *cmd;
     int required_params_nb;
     int optional_params_nb;
     void (*func)(client_sock_t *, int, server_t *, params_t);
+    bool auth_required;
 } command_t;
 
 extern const command_t commands[];
-extern const enum command_e no_auth_commands[];
 
 /// Clients
 void new_client(client_sock_t *clients, int client_socket, char *default_path);

@@ -28,14 +28,8 @@ int get_command_params(char **dest, char *src)
 
 void exec_cmd(client_id_t *cid, int command_id, server_t *srv, params_t args)
 {
-    bool require_auth = true;
+    bool require_auth = commands[command_id].auth_required;
 
-    for (int i = 0; i < COMMAND_ENUM_SIZE; i++) {
-        if (no_auth_commands[i] == command_id) {
-            require_auth = false;
-            break;
-        }
-    }
     if (require_auth && !cid->clients[cid->id].is_logged) {
         write_client_buff(cid->clients, cid->id, CODE_530);
         return;
@@ -47,7 +41,7 @@ void find_command(client_id_t *cid, int id, server_t *server, params_t params)
 {
     bool command_found = false;
 
-    for (enum command_e i = 0; i < COMMAND_ENUM_SIZE; i++) {
+    for (size_t i = 0; commands[i].func != NULL; i++) {
         if (strncmp(cid->clients[id].rbuf, commands[i].cmd,
             strlen(commands[i].cmd)) == 0) {
             exec_cmd(cid, i, server, params);
